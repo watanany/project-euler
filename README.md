@@ -1,3 +1,3 @@
 ## ProjectEuler.net
 
-projecteuler.net
+<projecteuler.net>
