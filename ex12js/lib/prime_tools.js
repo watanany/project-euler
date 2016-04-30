@@ -41,7 +41,7 @@ export default class PrimeTools {
       if (this.isPrime(i) && x % i == 0) {
         factors.push(i);
         x = parseInt(x / i);
-        i = 2;
+        i = 1;
       }
 
       if (x == 1)
