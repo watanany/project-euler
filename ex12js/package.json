@@ -2,11 +2,12 @@
   "name": "ex12",
   "version": "1.0.0",
   "description": "",
-  "main": "ex12.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/babel-node index.js",
-    "debug": "./node_modules/.bin/babel-node debug index.js"
+    "start": "./node_modules/.bin/babel-node .",
+    "debug": "./node_modules/.bin/babel-node debug .",
+    "build:js": "rm -rf ./build; mkdir -p ./build/lib; find lib -name '*.js' -exec ./node_modules/.bin/babel {} -o ./build/{} \\;"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,6 @@
 import 'babel-polyfill';
-import PrimeTools from './lib/prime_tools'
-import {product,subsequences,triangleNumber} from './lib/util'
+import PrimeTools from './prime_tools'
+import {product,subsequences,triangleNumber} from './util'
 
 function main() {
   const N = 500;

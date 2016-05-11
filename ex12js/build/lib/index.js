@@ -2,11 +2,11 @@
 
 require('babel-polyfill');
 
-var _prime_tools = require('./lib/prime_tools');
+var _prime_tools = require('./prime_tools');
 
 var _prime_tools2 = _interopRequireDefault(_prime_tools);
 
-var _util = require('./lib/util');
+var _util = require('./util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

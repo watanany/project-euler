@@ -8,11 +8,11 @@ export function subsequences(array) {
     const subset = [];
 
     for (let i = 0; i < bits.length; i++) {
-      if (bits[i] == 1) subset.push(array[i]);
+      if (bits[i] === 1) subset.push(array[i]);
     }
 
     subsets.push(subset);
-    if (bits.every(v => v == 1)) break;
+    if (bits.every(v => v === 1)) break;
     bits.incr();
   }
 

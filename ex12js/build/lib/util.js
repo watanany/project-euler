@@ -23,12 +23,12 @@ function subsequences(array) {
     var subset = [];
 
     for (var i = 0; i < bits.length; i++) {
-      if (bits[i] == 1) subset.push(array[i]);
+      if (bits[i] === 1) subset.push(array[i]);
     }
 
     subsets.push(subset);
     if (bits.every(function (v) {
-      return v == 1;
+      return v === 1;
     })) break;
     bits.incr();
   }
