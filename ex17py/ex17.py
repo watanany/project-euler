@@ -22,47 +22,48 @@ def main():
 
     print(total_length)
 
-
 def word(n):
     "convert `n` to English numerals"
-    return compose(n, full(*partial(n)))
+    return compose(*full(*partial(n)))
 
 
 
-def partial(n, numbers=[], words=[]):
+def partial(n, _n=None, numbers=[], words=[]):
     "convert `n` to partial numbers and partial words"
-    digits = digit(n)
-    w = D.get(n)
+    if _n is None: _n = n
+
+    digits = digit(_n)
+    w = D.get(_n)
     h = 10 ** (digits - 1)
-    i = n // h * h
+    i = _n // h * h
 
     if w is not None:
-        return (tuple(numbers[::-1]), tuple(([w] + words)[::-1]))
+        return n, tuple(numbers[::-1]), tuple(([w] + words)[::-1])
     elif digits == 1:
-        return (tuple(numbers[::-1]), tuple(words[::-1]))
+        return n, tuple(numbers[::-1]), tuple(words[::-1])
     else:
         if D.get(i) is not None:
-            return partial(n % h, numbers, [D.get(i)] + words)
+            return partial(n, _n % h, numbers, [D.get(i)] + words)
         else:
-            return partial(n % h, [i] + numbers, words)
+            return partial(n, _n % h, [i] + numbers, words)
 
 
-def full(numbers, words, acc=[]):
+def full(n, numbers, words, acc=[]):
     """\
     convert partial numbers and partial words to full words.
     numbers must contain only 3-4 digits number.
     """
     if len(numbers) == 0:
-        return tuple(acc[::-1]) + words
+        return n, tuple(acc[::-1]) + words
     else:
         s = str(numbers[0])
         w = '{}-{}'.format(D[int(s[0])],
                            E[len(s)])
-        return full(numbers[1:], words, [w] + acc)
+        return full(n, numbers[1:], words, [w] + acc)
 
-def compose(d, words):
+def compose(n, words):
     "insert 'and' to propery position"
-    digits = digit(d)
+    digits = digit(n)
 
     if digits < 3:
         return join(words)
