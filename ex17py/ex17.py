@@ -41,17 +41,20 @@ def _full(n, numbers, words, acc=[]):
         return [n, acc[::-1] + words]
     else:
         s = str(numbers[0])
-        w = '{}-{}'.format(D[int(s[0])],
-                           E[len(s)])
+        w = '{}-{}'.format(D[int(s[0])], E[len(s)])
+
         return _full(n, numbers[1:], words, [w] + acc)
 
 def _compose(n, words):
     "insert 'and' to propery position"
     digits = _digit(n)
 
-    if digits >= 3 and len(words) >= 2:
-        return '{} and {}'.format(words[0],
-                                  _join(words[1:]))
+    if len(words) >= 3 and n % 10 != 0:
+        return '{} and {}-{}'.format(*words)
+    elif digits >= 3 and len(words) >= 2:
+        return '{} and {}'.format(words[0], _join(words[1:]))
+    elif digits == 2 and len(words) == 2 and n % 10 != 0:
+        return '{}-{}'.format(*words)
     else:
         return _join(words)
 
