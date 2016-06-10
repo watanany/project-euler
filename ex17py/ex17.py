@@ -55,6 +55,7 @@ def _compose(n, words):
     else:
         return _join(words)
 
+
 def _join(words):
     "join word list with one space"
     return ' '.join(words)
