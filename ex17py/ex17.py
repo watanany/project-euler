@@ -26,8 +26,6 @@ def word(n):
     "convert `n` to English numerals"
     return compose(*full(*partial(n)))
 
-
-
 def partial(n, _n=None, numbers=[], words=[]):
     "convert `n` to partial numbers and partial words"
     if _n is None: _n = n
@@ -67,7 +65,7 @@ def compose(n, words):
 
     if digits < 3:
         return join(words)
-    elif digits == 3 or digits == 4:
+    else:
         if len(words) >= 2:
             return '{} and {}'.format(words[0],
                                       join(words[1:]))
