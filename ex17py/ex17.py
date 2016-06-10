@@ -31,11 +31,10 @@ def _partial(n, _n=None, numbers=[], words=[]):
         return [n, numbers[::-1], ([D.get(_n)] + words)[::-1]]
     elif digits == 1:
         return [n, numbers[::-1], words[::-1]]
+    elif D.get(i) is not None:
+        return _partial(n, _n % h, numbers, [D.get(i)] + words)
     else:
-        if D.get(i) is not None:
-            return _partial(n, _n % h, numbers, [D.get(i)] + words)
-        else:
-            return _partial(n, _n % h, [i] + numbers, words)
+        return _partial(n, _n % h, [i] + numbers, words)
 
 def _full(n, numbers, words, acc=[]):
     "convert partial numbers and partial words to full words"
