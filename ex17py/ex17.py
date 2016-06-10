@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from sys import stderr
 
 D = {
     1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine',
@@ -77,6 +78,15 @@ def _main():
 
     trimed_words = (w.replace(' ', '').replace('-', '') for w in words)
     total_length = sum(len(w) for w in trimed_words)
+
+    # DEBUG
+    print('=' * 80)
+    for t in (_partial(d) for d in domain): print(list(t[1:]))
+    print('=' * 80)
+    for t in (_full(*_partial(d)) for d in domain): print(list(t[1:]))
+    print('=' * 80)
+    for t in (_compose(*_full(*_partial(d))) for d in domain): print(t)
+    print('=' * 80)
 
     print(total_length)
 
