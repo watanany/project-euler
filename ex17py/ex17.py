@@ -50,7 +50,7 @@ def _compose(n, words):
     digits = _digit(n)
 
     if len(words) >= 3 and n % 10 != 0:
-        return '{} and {}-{}'.format(*words)
+        return '{} and {}-{}'.format(_join(words[:-2]), words[-2], words[-1])
     elif digits >= 3 and len(words) >= 2:
         return '{} and {}'.format(words[0], _join(words[1:]))
     elif digits == 2 and len(words) == 2 and n % 10 != 0:
@@ -75,6 +75,7 @@ def _main():
     words = (word(d) for d in domain)
 
     trimed_words = (w.replace(' ', '').replace('-', '') for w in words)
+
     total_length = sum(len(w) for w in trimed_words)
 
     # DEBUG
