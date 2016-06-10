@@ -12,25 +12,17 @@ E = {
     4: 'thousand',
 }
 
-def main():
-    domain = range(1, 1001)
-
-    words = (word(d) for d in domain)
-
-    trimed_words = (w.replace(' ', '').replace('-', '') for w in words)
-    total_length = sum(len(w) for w in trimed_words)
-
-    print(total_length)
 
 def word(n):
     "convert `n` to English numerals"
-    return compose(*full(*partial(n)))
+    return _compose(*_full(*_partial(n)))
 
-def partial(n, _n=None, numbers=[], words=[]):
-    "convert `n` to partial numbers and partial words"
+
+def _partial(n, _n=None, numbers=[], words=[]):
+    "convert `n` to _partial numbers and _partial words"
     if _n is None: _n = n
 
-    digits = digit(_n)
+    digits = _digit(_n)
     w = D.get(_n)
     h = 10 ** (digits - 1)
     i = _n // h * h
@@ -41,45 +33,53 @@ def partial(n, _n=None, numbers=[], words=[]):
         return n, tuple(numbers[::-1]), tuple(words[::-1])
     else:
         if D.get(i) is not None:
-            return partial(n, _n % h, numbers, [D.get(i)] + words)
+            return _partial(n, _n % h, numbers, [D.get(i)] + words)
         else:
-            return partial(n, _n % h, [i] + numbers, words)
+            return _partial(n, _n % h, [i] + numbers, words)
 
-
-def full(n, numbers, words, acc=[]):
-    """\
-    convert partial numbers and partial words to full words.
-    numbers must contain only 3-4 digits number.
-    """
+def _full(n, numbers, words, acc=[]):
+    "convert partial numbers and partial words to full words"
     if len(numbers) == 0:
         return n, tuple(acc[::-1]) + words
     else:
         s = str(numbers[0])
         w = '{}-{}'.format(D[int(s[0])],
                            E[len(s)])
-        return full(n, numbers[1:], words, [w] + acc)
+        return _full(n, numbers[1:], words, [w] + acc)
 
-def compose(n, words):
+def _compose(n, words):
     "insert 'and' to propery position"
-    digits = digit(n)
+    digits = _digit(n)
 
     if digits < 3:
-        return join(words)
+        return _join(words)
     else:
         if len(words) >= 2:
             return '{} and {}'.format(words[0],
-                                      join(words[1:]))
+                                      _join(words[1:]))
         else:
-            return join(words)
+            return _join(words)
 
-def join(words):
+def _join(words):
     "join word list with one space"
     return ' '.join(words)
 
-def digit(n):
+def _digit(n):
     "number of digits"
     return len(str(n))
 
 
+
+def _main():
+    domain = range(1, 1001)
+
+    words = (word(d) for d in domain)
+
+    trimed_words = (w.replace(' ', '').replace('-', '') for w in words)
+    total_length = sum(len(w) for w in trimed_words)
+
+    print(total_length)
+
+
 if __name__ == '__main__':
-    main()
+    _main()
