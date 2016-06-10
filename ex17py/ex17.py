@@ -15,7 +15,10 @@ E = {
 
 def word(n):
     "convert `n` to English numerals"
-    return _compose(*_full(*_partial(n)))
+    if 1 <= n <= 1000:
+        return _compose(*_full(*_partial(n)))
+    else:
+        raise RuntimeError('{} is out of domain(1-1000)'.format(n))
 
 
 def _partial(n, _n=None, numbers=[], words=[]):
@@ -41,7 +44,7 @@ def _full(n, numbers, words, acc=[]):
         return [n, acc[::-1] + words]
     else:
         s = str(numbers[0])
-        w = '{}-{}'.format(D[int(s[0])], E[len(s)])
+        w = '{} {}'.format(D[int(s[0])], E[len(s)])
 
         return _full(n, numbers[1:], words, [w] + acc)
 
@@ -49,12 +52,18 @@ def _compose(n, words):
     "insert 'and' to propery position"
     digits = _digit(n)
 
-    if len(words) >= 3 and n % 10 != 0:
-        return '{} and {}-{}'.format(_join(words[:-2]), words[-2], words[-1])
-    elif digits >= 3 and len(words) >= 2:
-        return '{} and {}'.format(words[0], _join(words[1:]))
-    elif digits == 2 and len(words) == 2 and n % 10 != 0:
-        return '{}-{}'.format(*words)
+    if digits == 3:
+        if len(words) == 3:
+            return '{} and {}-{}'.format(_join(words[:-2]), words[-2], words[-1])
+        elif len(words) == 2:
+            return '{} and {}'.format(words[0], _join(words[1:]))
+        else:
+            return _join(words)
+    elif digits == 2:
+        if len(words) == 2:
+            return '{}-{}'.format(*words)
+        else:
+            return _join(words)
     else:
         return _join(words)
 
