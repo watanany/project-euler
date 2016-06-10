@@ -27,12 +27,10 @@ def _partial(n, _n=None, numbers=[], words=[]):
     h = 10 ** (digits - 1)
     i = _n // h * h
 
-    w = D.get(_n)
-
-    if w is not None:
-        return n, tuple(numbers[::-1]), tuple(([w] + words)[::-1])
+    if D.get(_n) is not None:
+        return [n, numbers[::-1], ([D.get(_n)] + words)[::-1]]
     elif digits == 1:
-        return n, tuple(numbers[::-1]), tuple(words[::-1])
+        return [n, numbers[::-1], words[::-1]]
     else:
         if D.get(i) is not None:
             return _partial(n, _n % h, numbers, [D.get(i)] + words)
@@ -42,7 +40,7 @@ def _partial(n, _n=None, numbers=[], words=[]):
 def _full(n, numbers, words, acc=[]):
     "convert partial numbers and partial words to full words"
     if len(numbers) == 0:
-        return n, tuple(acc[::-1]) + words
+        return [n, acc[::-1] + words]
     else:
         s = str(numbers[0])
         w = '{}-{}'.format(D[int(s[0])],
@@ -53,14 +51,11 @@ def _compose(n, words):
     "insert 'and' to propery position"
     digits = _digit(n)
 
-    if digits < 3:
-        return _join(words)
+    if digits >= 3 and len(words) >= 2:
+        return '{} and {}'.format(words[0],
+                                  _join(words[1:]))
     else:
-        if len(words) >= 2:
-            return '{} and {}'.format(words[0],
-                                      _join(words[1:]))
-        else:
-            return _join(words)
+        return _join(words)
 
 def _join(words):
     "join word list with one space"
@@ -82,9 +77,9 @@ def _main():
 
     # DEBUG
     print('=' * 80)
-    for t in (_partial(d) for d in domain): print(list(t[1:]))
+    for t in (_partial(d) for d in domain): print(t)
     print('=' * 80)
-    for t in (_full(*_partial(d)) for d in domain): print(list(t[1:]))
+    for t in (_full(*_partial(d)) for d in domain): print(t)
     print('=' * 80)
     for t in (_compose(*_full(*_partial(d))) for d in domain): print(t)
     print('=' * 80)
