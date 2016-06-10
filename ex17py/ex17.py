@@ -24,9 +24,10 @@ def _partial(n, _n=None, numbers=[], words=[]):
     if _n is None: _n = n
 
     digits = _digit(_n)
-    w = D.get(_n)
     h = 10 ** (digits - 1)
     i = _n // h * h
+
+    w = D.get(_n)
 
     if w is not None:
         return n, tuple(numbers[::-1]), tuple(([w] + words)[::-1])
