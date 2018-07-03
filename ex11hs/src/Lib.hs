@@ -10,19 +10,18 @@ type Domain = Array Index Int
 
 someFunc :: IO ()
 someFunc = do
+  let indiceList = filter allInDomainRange $ foldl1 (++) $ map (convert 4) (indices domain)
+  let elementsList = map toElementsList indiceList
   print $ maximum $ map product elementsList
   where
-    domain = getDomain
-    indexList = indices domain
-    isInDomainRange = isInRange domain
     allInDomainRange list = all id $ map (isInRange domain) list
-    toElements list = map (domain !) list
-    indiceList = filter allInDomainRange $ foldl1 (++) $ map (convert 4) indexList
-    elementsList = map toElements indiceList
+    toElementsList list = map (domain !) list
 
-getDomain :: Domain
-getDomain = array ((0, 0), (19, 19)) list
+domain :: Domain
+domain = array (minBound, maxBound) list
   where
+    minBound@(imin, jmin) = (0, 0)
+    maxBound@(imax, jmax) = (19, 19)
     list2d = [
         [08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08],
         [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 04, 56, 62, 00],
@@ -45,7 +44,7 @@ getDomain = array ((0, 0), (19, 19)) list
         [20, 73, 35, 29, 78, 31, 90, 01, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 05, 54],
         [01, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 01, 89, 19, 67, 48]
       ] :: [[Int]]
-    list = [((i, j), e) | j <- [0..19], i <- [0..19], let e = list2d !! i !! j]
+    list = [((i, j), e) | j <- [jmin..jmax], i <- [imin..imax], let e = list2d !! i !! j]
 
 h :: Index -> Int -> Index
 h (i, j) n = (i, j + n - 1)
@@ -60,18 +59,15 @@ dl :: Index -> Int -> Index
 dl (i, j) n = (i + n - 1, j - n + 1)
 
 convert :: Int -> Index -> [[Index]]
-convert n (i, j) = [a, b, c, d]
+convert n index = [a, b, c, d]
   where
-    a = map (h (i, j)) [1..n]
-    b = map (v (i, j)) [1..n]
-    c = map (dr (i, j)) [1..n]
-    d = map (dl (i, j)) [1..n]
+    a = map (h index) [1..n]
+    b = map (v index) [1..n]
+    c = map (dr index) [1..n]
+    d = map (dl index) [1..n]
 
 isInRange :: Domain -> Index -> Bool
 isInRange domain index =
-  case elemIndex index indexList of
+  case elemIndex index (indices domain) of
     Just _ -> True
     Nothing -> False
-  where
-    indexList = indices domain
-
